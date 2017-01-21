@@ -2,6 +2,14 @@ function tasks(state = [], action){
 	switch(action.type){
 		case 'ADD_TASK' :
 			console.log("ADD TASK NOW!!");
+			const newState = {...state};
+			const task = {
+				text: action.text,
+				completed: action.completed
+			};
+			const unique = Date.now();
+			newState[unique] = task;
+			return newState;
 			/*
 			const i = action.index;
 			
