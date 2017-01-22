@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router'
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
@@ -27,7 +28,7 @@ class MainNav extends Component {
 		return (
 			<div>
 			 <AppBar
-			    title={this.props.title}
+			    title={<Link to="/">{this.props.title}</Link>}
 			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
 			  />
 			  <Drawer 

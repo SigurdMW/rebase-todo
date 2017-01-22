@@ -8,7 +8,8 @@ import './index.css';
 // components
 import App from './components/App';
 import Main from './components/Main';
-import Home from './components/Home';
+import Home from './components/home/Home';
+import EditTask from './components/task/EditTask'
 //import NotFound from './components/NotFound';
 
 const appRoutes = (
@@ -16,6 +17,7 @@ const appRoutes = (
 		<Router history={history}>
 			<Route path="/" component={App}>
 				<IndexRoute component={Home} />
+				<Route path="/task/:taskId" component={EditTask} />
 			</Route>
 		</Router>
 	</Provider>

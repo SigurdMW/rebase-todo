@@ -1,7 +1,7 @@
 function tasks(state = [], action){
 	switch(action.type){
+		
 		case 'ADD_TASK' :
-			console.log("ADD TASK NOW!!");
 			const newState = {...state};
 			const task = {
 				text: action.text,
@@ -10,19 +10,21 @@ function tasks(state = [], action){
 			const unique = Date.now();
 			newState[unique] = task;
 			return newState;
-			/*
-			const i = action.index;
-			
-			const newState = {...state};
-			newState[i].likes += 1;
-			return Object.values(newState);
-			/// Wes Bos solution:
-			return [
-				...state.slice(0,i), // before the one we're updating
-				{...state[i], likes: state[i].likes +1},
-				...state.slice(i+1), // after the one we're updating
-			]
-			*/
+		
+		case 'TOGGLE_TASK' : 
+			const state2 = {...state};
+			const toggledTask = state2[action.index];
+			toggledTask.completed = !state[action.index].completed;
+			state2[action.index] = toggledTask;
+			return state2;
+
+		case 'UPDATE_TASK' :
+			const state3 = {...state};
+			const updatedTask = state3[action.index];
+			updatedTask.text = action.text;
+			state3[action.index] = updatedTask;
+			return state3;
+		
 		default : 
 			return state;
 	}

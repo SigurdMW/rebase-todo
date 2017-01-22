@@ -1,0 +1,6 @@
+.single-task {
+}
+
+.single-task input:checked + label {
+	text-decoration: line-through;
+}
