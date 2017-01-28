@@ -3,3 +3,16 @@ ul.task-list {
 	padding:1rem 0;
 	margin: 0;
 }
+
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.card {
+	color:#fff;
+	max-width:520px;
+	width: 100%;
+	border:1px solid #f7f7f7;
+	margin:1em 0;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.3);
+}

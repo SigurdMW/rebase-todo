@@ -1,37 +1,59 @@
 import React, { Component } from 'react'
+import TextField from 'material-ui/TextField'
+import RaisedButton	 from 'material-ui/RaisedButton'
+import { List } from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import { Card } from 'material-ui/Card';
+import { Row, Col } from 'react-grid-system';
 
+// Components
 import Task from '../task/Task'
 import './home.css'
 
 class Home extends Component {
 	submitTask = (e) => {
 		e.preventDefault();
-		this.props.addTask(this.todo.value);
-		this.submitTaskForm.reset();
+		if(this.refs.task.getValue()){
+			this.props.addTask(this.refs.task.getValue());
+			this.refs.task.getInputNode().value = ''
+		}
 	}
 
 	renderTask = (key, index) => {
-		const task = this.props.tasks[key];
 		return (
-			<Task key={key} index={key} task={task} {...this.props} />
+			<Task key={key} index={key} {...this.props} />
 		)
 	}
+
 	render(){
-		const { tasks } = this.props; //{tasks.map(this.renderTask)}
+		const { tasks } = this.props || null;
 		return (
 			<div>
 				<h1>To dos</h1>
-				<form ref={(value) => this.submitTaskForm = value} onSubmit={this.submitTask}>
-					<input type="text" ref={(value) => this.todo = value} placeholder="Ny oppgave" />
-					<button type="submit" value="submit">Legg til</button>
-				</form>
-				<ul className="task-list">
-					{
-						Object
-							.keys(tasks)
-							.map(this.renderTask)
-					}
-				</ul>
+				<form onSubmit={this.submitTask}>
+					<TextField
+				  	ref="task"
+			      defaultValue=""
+			      floatingLabelText="Task text"
+			    />
+					<RaisedButton label="Update task" primary={true} type="submit" />
+				</form>    
+	      {tasks.length != 0 &&
+	      	<Row>
+	      		<Col md={6}>
+			      	<Card>
+				      	<List>
+				        	<Subheader>Your to-dos</Subheader>
+				        	{
+										Object
+											.keys(tasks)
+											.map(this.renderTask)
+									}
+				      	</List>
+				      </Card>
+				    </Col>
+				  </Row>
+	      }
 			</div>
 		)
 	}

@@ -24,6 +24,11 @@ function tasks(state = [], action){
 			updatedTask.text = action.text;
 			state3[action.index] = updatedTask;
 			return state3;
+
+		case 'DELETE_TASK' : 
+			const delState = {...state};
+			delete delState[action.index];
+			return delState;
 		
 		default : 
 			return state;

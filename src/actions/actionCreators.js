@@ -23,3 +23,11 @@ export function updateTask(index, text){
 		text
 	}
 }
+
+// delete task
+export function deleteTask(index){
+	return {
+		type: 'DELETE_TASK',
+		index
+	}
+}

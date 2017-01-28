@@ -28,8 +28,8 @@ class MainNav extends Component {
 		return (
 			<div>
 			 <AppBar
-			    title={<Link to="/">{this.props.title}</Link>}
-			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
+			    title={<Link to="/" className="main-nav__home-link">{this.props.title}</Link>}
+			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} onEnter={this.handleToggle} /></IconButton>}
 			  />
 			  <Drawer 
 	          open={this.state.open} 

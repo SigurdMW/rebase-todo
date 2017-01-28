@@ -1,6 +1,17 @@
 .single-task {
+	display: inline-block;
+	padding:1em;
+	border: 1px solid #f7f7f7;
+	margin: 0 1em 1em 0;
+	vertical-align: top;
+	max-width: 250px;
+	width: 100%;
 }
 
-.single-task input:checked + label {
+.single-task__completed {
 	text-decoration: line-through;
+}
+
+.single-task__delete {
+	float: right;
 }
