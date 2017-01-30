@@ -1,25 +1,25 @@
 // add task
-export function addTask(text){
+export function addTask(text, completed = false){
 	return {
 		type: 'ADD_TASK',
 		text,
-		completed: false
+		completed
 	}
 }
 
 // complete task
-export function toggleCompletedTask(index){
+export function toggleCompletedTask(id){
 	return {
 		type: 'TOGGLE_TASK',
-		index
+		id
 	}
 }
 
 // update task
-export function updateTask(index, text){
+export function updateTask(id, text){
 	return {
 		type: 'UPDATE_TASK',
-		index,
+		id,
 		text
 	}
 }

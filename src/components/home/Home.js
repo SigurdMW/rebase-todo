@@ -21,7 +21,7 @@ class Home extends Component {
 
 	renderTask = (key, index) => {
 		return (
-			<Task key={key} index={key} {...this.props} />
+			<Task key={key} index={index} id={this.props.tasks[index].id} {...this.props} />
 		)
 	}
 

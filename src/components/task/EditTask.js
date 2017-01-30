@@ -6,9 +6,8 @@ class EditTask extends Component {
 	handleChange = (e) => {
 		e.preventDefault();
 		const taskId = this.props.params.taskId;
-		const task = this.props.tasks[taskId];
 		const text = e.target.value;
-		this.props.updateTask(taskId, text);
+		this.props.updateTask(parseInt(taskId), text);
 	}
 
 	returnToHome = () => {
@@ -17,7 +16,9 @@ class EditTask extends Component {
 	
 	render(){
 		const taskId = this.props.params.taskId;
-		const task = this.props.tasks[taskId] || null;
+		const task = this.props.tasks.find(task => {
+			return task.id == taskId;
+		});
 		var status;
 
 		if(task){

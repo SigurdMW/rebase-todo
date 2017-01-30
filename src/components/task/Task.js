@@ -8,7 +8,7 @@ import './task.css'
 
 class Task extends Component {
 	handleCompletion = () => {
-		this.props.toggleCompletedTask(this.props.index);
+		this.props.toggleCompletedTask(this.props.id);
 	}
 
 	deleteTask = () => {
@@ -16,7 +16,7 @@ class Task extends Component {
 	}
 
 	editTask = () => {
-		this.props.router.push(`/task/${this.props.index}`)
+		this.props.router.push(`/task/${this.props.id}`)
 	}
 
 	render(){
