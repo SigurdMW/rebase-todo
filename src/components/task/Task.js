@@ -9,6 +9,7 @@ import './task.css'
 class Task extends Component {
 	handleCompletion = () => {
 		this.props.toggleCompletedTask(this.props.id);
+		console.log(this.props.id)
 	}
 
 	deleteTask = () => {
@@ -20,9 +21,11 @@ class Task extends Component {
 	}
 
 	render(){
-		const { text, completed } = this.props.tasks[this.props.index];
+		const { tasks, id } = this.props;
+		const task = tasks.filter(task => { return task.id === id})
+		const { text, completed} = task[0]
 		const { index } = this.props;
-		const status = (this.props.tasks[this.props.index].completed) ? "Completed" : "Not completed";
+		const status = (completed) ? "Completed" : "Not completed";
 		return (
 			<ListItem
           leftCheckbox={<Checkbox onCheck={this.handleCompletion} checked={completed} />}

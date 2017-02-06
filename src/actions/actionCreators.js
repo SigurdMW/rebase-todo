@@ -25,9 +25,16 @@ export function updateTask(id, text){
 }
 
 // delete task
-export function deleteTask(index){
+export function deleteTask(id){
 	return {
 		type: 'DELETE_TASK',
-		index
+		id
+	}
+}
+
+export function setFilter(filter){
+	return {
+		type: 'SET_VISIBILITY_FILTER',
+		filter
 	}
 }

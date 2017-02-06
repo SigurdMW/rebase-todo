@@ -13,7 +13,6 @@ const todo = (state, action) => {
 				if(state.id !== action.id) {
 					return state;
 				}
-
 				return {
 					...state,
 					completed: !state.completed
@@ -45,16 +44,14 @@ function tasks(state = [], action){
 				todo(undefined, action)
 			];
 		
-		case 'TOGGLE_TASK': 
-			return state.map(t => todo(t, action))
-
+		case 'TOGGLE_TASK':
 		case 'UPDATE_TASK':
 			return state.map(t => todo(t, action))
 
 		case 'DELETE_TASK':
-			const delState = {...state};
-			delete delState[action.index];
-			return delState;
+			return state.filter(function(obj) {
+		    return obj.id !== parseInt(action.id);
+			});
 		
 		default: 
 			return state;

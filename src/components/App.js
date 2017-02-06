@@ -5,7 +5,8 @@ import Main from './Main';
 
 function mapStateToProps(state){
 	return {
-		tasks: state.tasks
+		tasks: state.tasks,
+		filters: state.filters
 	}
 }
 

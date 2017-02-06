@@ -13,6 +13,11 @@ class EditTask extends Component {
 	returnToHome = () => {
 		this.props.router.push("/");
 	}
+
+	deleteTask = () => {
+		this.props.deleteTask(this.props.params.taskId);
+		this.props.router.push("/");
+	}
 	
 	render(){
 		const taskId = this.props.params.taskId;
@@ -23,8 +28,6 @@ class EditTask extends Component {
 
 		if(task){
 			status = (task.completed) ? "Completed" : "Not completed";
-			console.log(task)
-			console.log(status)
 		}
 		
 		if(!task){
@@ -45,6 +48,7 @@ class EditTask extends Component {
 			      onChange={this.handleChange}
 			    />
 				<RaisedButton label="Update task" onClick={this.returnToHome} primary={true} />
+				<RaisedButton label="Delete" onClick={this.deleteTask} />
 			</div>
 		)
 	}
