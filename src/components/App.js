@@ -1,19 +1,13 @@
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as actionCreators from '../actions/actionCreators';
-import Main from './Main';
+import React, { Component } from 'react'
 
-function mapStateToProps(state){
-	return {
-		tasks: state.tasks,
-		filters: state.filters
+class App extends Component {
+	render(){
+		return (
+			<div>
+				{this.props.children}
+			</div>
+		)
 	}
 }
-
-function mapDispatchToProps(dispatch){
-	return bindActionCreators(actionCreators, dispatch);
-}
-
-const App = connect(mapStateToProps, mapDispatchToProps)(Main);
 
 export default App;
