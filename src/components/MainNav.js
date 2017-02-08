@@ -5,9 +5,6 @@ import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-injectTapEventPlugin();
 
 /**
  * A simple example of `AppBar` with an icon on the right.
@@ -25,11 +22,15 @@ class MainNav extends Component {
   handleClose = () => this.setState({open: false});
 
 	render(){
+		const style = {
+			color: "#fff",
+			textDecoration: "none"
+		}
 		return (
 			<div>
 			 <AppBar
-			    title={<Link to="/" className="main-nav__home-link">{this.props.title}</Link>}
-			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} onEnter={this.handleToggle} /></IconButton>}
+			    title={<Link to="/" style={style}>{this.props.title}</Link>}
+			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
 			  />
 			  <Drawer 
 	          open={this.state.open} 

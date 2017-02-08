@@ -1,26 +1,47 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import './index.css';
+import React from 'react'
+import { render } from 'react-dom'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
-// test 
-import base from './base'
+// Material 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// services
+import { getLoggedInUser } from './services/services'
 
 // components
-import App from './components/App';
-import Home from './components/home/Home';
-import EditTask from './components/task/EditTask'
-//import NotFound from './components/NotFound';
+import App from './components/App'
+import Home from './components/home/Home'
+import TodoLists from './components/TodoLists'
+import Login from './components/auth/Login'
+
+// css
+import './index.css'
+
+// Material dependency
+injectTapEventPlugin();
+
+function authCheck(nextState, replace) {
+	const uid = getLoggedInUser();
+	
+	if(!uid){
+		replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+	}
+}
 
 const appRoutes = (
 	<Router history={browserHistory}>
 		<Route path="/" component={App}>
-			<IndexRoute component={Home} />
-			<Route path="/task/:taskId" component={EditTask} />
+			<IndexRoute component={Home} onEnter={authCheck} />
+			<Route path="/lists/:listId" component={TodoLists} onEnter={authCheck} />
+			<Route path="/login" component={Login} />
 		</Route>
 	</Router>
 )
 
+/*
 class Test extends Component {
 
 	constructor(){
@@ -77,6 +98,7 @@ class Test extends Component {
 		)
 	}
 }
+*/
 
 //render(appRoutes, document.getElementById('root'));
-render(<Test />, document.getElementById('root'));
+render(appRoutes, document.getElementById('root'));
