@@ -7,6 +7,10 @@ export function syncTodoLists (_this, uid) {
 	});
 }
 
+export function removeBaseSync(_this){
+	base.removeBinding(_this.ref)
+}
+
 export function getLoggedInUser(){
 	const user = JSON.parse(localStorage.getItem("user"))
 	return (user) ? user.uid : null;
