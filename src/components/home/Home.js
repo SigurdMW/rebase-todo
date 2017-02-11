@@ -57,7 +57,7 @@ class Home extends Component {
         primaryText={list.title}
         secondaryText={secondaryText}
         insetChildren={false}
-        onClick={() => this.goToList(key, list)}
+        onTouchTap={() => this.goToList(key, list)}
        />
 		)
 	}

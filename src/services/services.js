@@ -1,4 +1,5 @@
-import base from '../base';
+import base from '../base'
+import { browserHistory } from 'react-router'
 
 export function syncTodoLists (_this, uid) {
 	_this.ref = base.syncState(`${uid}/lists`, {
@@ -14,4 +15,14 @@ export function removeBaseSync(_this){
 export function getLoggedInUser(){
 	const user = JSON.parse(localStorage.getItem("user"))
 	return (user) ? user.uid : null;
+}
+
+function removeLoggedInUser(){
+	localStorage.removeItem("user")
+}
+
+export function logOutUser () {
+	base.unauth()
+	removeLoggedInUser()
+	browserHistory.push('/login');
 }

@@ -3,11 +3,40 @@ import TextField from 'material-ui/TextField'
 import { ListItem } from 'material-ui/List'
 import FlatButton from 'material-ui/FlatButton'
 import { Row, Col } from 'react-grid-system'
+import Dialog from 'material-ui/Dialog'
+import RaisedButton from 'material-ui/RaisedButton'
 
 class UpdateTask extends Component {
+	constructor(){
+		super()
+
+		this.state = {
+			modalOpen: false
+		}
+	}
+
 	updateTask = () => {
 		const name = this.refs.taskText.getValue()
 		this.props.handleUpdateTask(this.props.id, {name})
+	}
+
+	handleDeleteTask = () => {
+		this.props.handleDeleteTask(this.props.id)
+		this.setState({
+			modalOpen: false
+		})
+	}
+
+	confirmDelete = () => {
+		this.setState({
+			modalOpen: true
+		})
+	}
+
+	handleModalClose = () => {
+		this.setState({
+			modalOpen: false
+		})
 	}
 
 	render(){
@@ -28,8 +57,28 @@ class UpdateTask extends Component {
 				    />
 					</Col>
 					<Col md={2}>
-						<FlatButton label="Delete" secondary={true} />
+						<FlatButton label="Delete" onTouchTap={this.confirmDelete} secondary={true} />
 					</Col>
+	        <Dialog
+	          title="Delete this task?"
+	          actions={[
+				      <FlatButton
+				        label="Cancel"
+				        primary={true}
+				        onTouchTap={this.handleModalClose}
+				      />,
+				      <RaisedButton
+				      	label="DELETE TASK"
+				        secondary={true}
+				        keyboardFocused={true}
+				        onTouchTap={this.handleDeleteTask} />,
+				    ]}
+	          modal={false}
+	          open={this.state.modalOpen}
+	          onRequestClose={this.handleModalClose}
+	        >
+	          Are you sure you want to delete the task "{this.props.task.name}"?
+	        </Dialog>
 				</Row>
 			</ListItem>
 		)

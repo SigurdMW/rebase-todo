@@ -5,10 +5,12 @@ import { Row, Col } from 'react-grid-system'
 import { Card } from 'material-ui/Card'
 import { List, ListItem } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
-import { addTask, taskTemplate, updateTask } from '../services/tasks'
+import { addTask, taskTemplate, updateTask, deleteTask } from '../services/tasks'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import UpdateTask from './task/UpdateTask'
+import Checkbox from 'material-ui/Checkbox'
+import { removeBaseSync } from '../services/services'
 
 
 class TodoLists extends Component {
@@ -36,6 +38,10 @@ class TodoLists extends Component {
 	  });
 	}
 
+	componentWillUnmount(){
+		removeBaseSync(this)
+	}
+
 	addTodo = (e) => {
 		e.preventDefault()
 		const name = this.refs.taskText.getValue()
@@ -49,10 +55,21 @@ class TodoLists extends Component {
 		updateTask(this.props.params.listId, taskId, obj)
 	}
 
+	handleDeleteTask = (taskId) => {
+		deleteTask(this.props.params.listId, taskId)
+	}
+
+	handleToggle = (taskId) => {
+		updateTask(this.props.params.listId, taskId, {
+			completed: !this.state.list.tasks[taskId].completed
+		})
+	}
+
 	renderTask = (key, index) => {
 		const task = this.state.list.tasks[key]
 		return (
-			<ListItem 
+			<ListItem
+				leftCheckbox={<Checkbox checked={task.completed} onCheck={() => this.handleToggle(key)} />} 
 				key={key}
 				initiallyOpen={false}
 				nestedItems={[
@@ -60,7 +77,8 @@ class TodoLists extends Component {
           	key={`${key}1`}
           	id={key}
           	task={task} 
-          	handleUpdateTask={this.handleUpdateTask} 
+          	handleUpdateTask={this.handleUpdateTask}
+          	handleDeleteTask={this.handleDeleteTask}
           />
          ]}
 			>
@@ -77,8 +95,7 @@ class TodoLists extends Component {
 				<h1>{title}</h1>
 				<form onSubmit={this.addTodo}>
 					<TextField
-			      hintText="Add new task"
-			      floatingLabelText="New task name"
+			      floatingLabelText="Add task"
 			      ref="taskText"
 			    />
 			    <RaisedButton label="Add task" primary={true} type="submit" />

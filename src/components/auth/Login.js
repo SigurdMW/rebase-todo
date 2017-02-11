@@ -76,6 +76,7 @@ class Login extends Component {
 				      floatingLabelText="Your email address"
 				      type="email"
 				      ref="email"
+				      autoFocus={true}
 				    /><br />
 				    <TextField
 				      hintText="Password"

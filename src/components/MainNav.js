@@ -4,7 +4,9 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from 'material-ui/MenuItem'
+import FlatButton from 'material-ui/FlatButton'
+import { logOutUser} from '../services/services'
 
 /**
  * A simple example of `AppBar` with an icon on the right.
@@ -29,8 +31,10 @@ class MainNav extends Component {
 		return (
 			<div>
 			 <AppBar
-			    title={<Link to="/" style={style}>{this.props.title}</Link>}
+			    title={<Link to="/" 
+			    style={style}>{this.props.title}</Link>}
 			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
+			    iconElementRight={<FlatButton label="Log out" onTouchTap={logOutUser} />}
 			  />
 			  <Drawer 
 	          open={this.state.open} 
