@@ -38,6 +38,14 @@ class TodoLists extends Component {
 	  });
 	}
 
+	componentWillReceiveProps(){
+		/*
+		this.setState({
+			list: this.props.location.state.list
+		})
+		*/
+	}
+
 	componentWillUnmount(){
 		removeBaseSync(this)
 	}

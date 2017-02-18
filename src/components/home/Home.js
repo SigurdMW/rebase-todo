@@ -10,13 +10,15 @@ import { syncTodoLists, removeBaseSync } from '../../services/services'
 import { getLoggedInUser, getUser } from '../../services/auth'
 import { addList } from '../../services/lists'
 import { base } from '../../base'
+import CircularProgress from 'material-ui/CircularProgress'
 
 
 class Home extends Component {
 	constructor(){
 		super()
 		this.state = {
-			lists: {}
+			lists: {},
+			isLoading: true
 		}
 	}
 
@@ -69,21 +71,27 @@ class Home extends Component {
 
 	render(){
 		const lists = this.state.lists
+		const { isLoading } = this.state
+		const loaderStyle = {
+			paddingLeft: "16px"
+		}
 		return (
 			<div>
 				<h1>My lists</h1>
 				<p>Here are your todo-lists:</p>
-				{/*<button onClick={this.handleAddList}>test</button>*/}
 				<Row>
 	      		<Col md={6}>
 			      	<Card>
 				      	<List>
-				        	<Subheader>All your todo-lists</Subheader>
-				        	{
-										Object
-											.keys(lists)
-											.map(this.renderLists)
-									}
+								<Subheader>All your todo-lists</Subheader>
+								{isLoading && 
+				      		<CircularProgress style={loaderStyle} thickness={7} />
+				      	}
+			        	{
+									Object
+										.keys(lists)
+										.map(this.renderLists)
+								}
 				      	</List>
 				      </Card>
 				     </Col>

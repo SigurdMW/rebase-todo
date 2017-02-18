@@ -3,7 +3,8 @@ import base from '../base'
 export function syncTodoLists (_this, uid) {
 	_this.ref = base.syncState(`${uid}/lists`, {
 	  context: _this,
-	  state: 'lists'
+	  state: 'lists',
+	  then: () => {_this.setState({ isLoading: false })}
 	});
 }
 
