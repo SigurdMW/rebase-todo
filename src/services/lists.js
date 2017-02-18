@@ -1,5 +1,5 @@
 import base from '../base'
-import { getLoggedInUser } from './services'
+import { getLoggedInUser } from './auth'
 
 export function addList (obj) {
 	const uid = getLoggedInUser();

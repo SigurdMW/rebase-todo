@@ -6,8 +6,10 @@ import Subheader from 'material-ui/Subheader'
 //import FlatButton from 'material-ui/FlatButton'
 import { Card } from 'material-ui/Card'
 import { Row, Col } from 'react-grid-system'
-import { syncTodoLists, getLoggedInUser, removeBaseSync } from '../../services/services'
+import { syncTodoLists, removeBaseSync } from '../../services/services'
+import { getLoggedInUser, getUser } from '../../services/auth'
 import { addList } from '../../services/lists'
+import { base } from '../../base'
 
 
 class Home extends Component {
@@ -21,6 +23,8 @@ class Home extends Component {
 	componentDidMount(){
 		const uid = getLoggedInUser();
 		syncTodoLists(this, uid)
+
+		getUser()
 	}
 
 	componentWillUnmount(){
@@ -57,7 +61,8 @@ class Home extends Component {
         primaryText={list.title}
         secondaryText={secondaryText}
         insetChildren={false}
-        onTouchTap={() => this.goToList(key, list)}
+        onTouchTap={(e) => {e.preventDefault();this.goToList(key, list)}}
+        //onClick={() => this.goToList(key, list)}
        />
 		)
 	}

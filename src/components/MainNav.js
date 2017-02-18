@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Link } from 'react-router'
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
-import Drawer from 'material-ui/Drawer';
+import AppBar from 'material-ui/AppBar'
+import IconButton from 'material-ui/IconButton'
+import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
+import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
-import FlatButton from 'material-ui/FlatButton'
-import { logOutUser} from '../services/services'
+import Logout from './auth/Logout'
 
 /**
  * A simple example of `AppBar` with an icon on the right.
@@ -15,26 +14,27 @@ import { logOutUser} from '../services/services'
 
 class MainNav extends Component {
 	constructor(props) {
-    super(props);
-    this.state = {open: false};
+    super(props)
+    this.state = {open: false}
   }
 
-  handleToggle = () => this.setState({open: !this.state.open});
+  handleToggle = () => this.setState({open: !this.state.open})
 
-  handleClose = () => this.setState({open: false});
+  handleClose = () => this.setState({open: false})
 
 	render(){
 		const style = {
 			color: "#fff",
 			textDecoration: "none"
 		}
+
 		return (
 			<div>
 			 <AppBar
 			    title={<Link to="/" 
 			    style={style}>{this.props.title}</Link>}
-			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={this.handleToggle} /></IconButton>}
-			    iconElementRight={<FlatButton label="Log out" onTouchTap={logOutUser} />}
+			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={(e) => {e.preventDefault();this.handleToggle}} /></IconButton>}
+			    iconElementRight={<Logout />}
 			  />
 			  <Drawer 
 	          open={this.state.open} 
@@ -44,7 +44,7 @@ class MainNav extends Component {
 	          <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
 	        </Drawer>
 	    	</div>
-		)
+			)
 	}
 }
 

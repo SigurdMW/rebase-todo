@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import base from '../base'
-import { getLoggedInUser } from '../services/services'
+import { getLoggedInUser } from '../services/auth'
 import { Row, Col } from 'react-grid-system'
 import { Card } from 'material-ui/Card'
 import { List, ListItem } from 'material-ui/List'

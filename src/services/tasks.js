@@ -1,5 +1,5 @@
 import base from '../base'
-import { getLoggedInUser } from './services'
+import { getLoggedInUser } from './auth'
 
 export function addTask (listId, obj) {
 	const uid = getLoggedInUser()
