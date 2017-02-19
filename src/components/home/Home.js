@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
-//import TextField from 'material-ui/TextField'
-//import RaisedButton	 from 'material-ui/RaisedButton'
 import { List, ListItem } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
-//import FlatButton from 'material-ui/FlatButton'
 import { Card } from 'material-ui/Card'
 import { Row, Col } from 'react-grid-system'
 import { syncTodoLists, removeBaseSync } from '../../services/services'
 import { getLoggedInUser, getUser } from '../../services/auth'
 import { addList } from '../../services/lists'
-import { base } from '../../base'
 import CircularProgress from 'material-ui/CircularProgress'
 
 
@@ -42,7 +38,7 @@ class Home extends Component {
 	goToList = (key, list) => {
 		this.props.router.push({
 			pathname: `/lists/${key}`,
-  		state: { list }
+  		state: { list, key }
 		})
 	}
 

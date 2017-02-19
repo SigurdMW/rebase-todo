@@ -17,33 +17,45 @@ class TodoLists extends Component {
 	constructor(){
 		super()
 		this.state = {
-			list: {}
+			list: {},
+			key: ""
 		}
+	}
+
+	getListFromRouter = (listId) => {
+		const uid = getLoggedInUser()
+		this.ref = base.syncState(`${uid}/lists/${listId}`, {
+	    context: this,
+	    state: 'list'
+	  })
 	}
 
 	componentDidMount(){
 		// get list info from location state
-		if(this.props.location.state.list){
-			const { list } = this.props.location.state
-			this.setState({
-				list
-			})
-		}
+		//this.getListFromRouter()
 
 		// sync state with firebase
-		const uid = getLoggedInUser();
-		this.ref = base.syncState(`${uid}/lists/${this.props.params.listId}`, {
-	    context: this,
-	    state: 'list'
-	  });
+		if(this.props.location.state.list){
+			const { list, key } = this.props.location.state
+			this.setState({
+				list: list,
+				key: key
+			})
+			this.getListFromRouter(key)
+		}
+		
 	}
 
-	componentWillReceiveProps(){
-		/*
-		this.setState({
-			list: this.props.location.state.list
-		})
-		*/
+	componentWillReceiveProps(nextProps, nextState){
+		if(this.props.location.state.key !== nextProps.location.state.key){
+			removeBaseSync(this)
+			const { list, key } = nextProps.location.state
+			this.setState({
+				list: list,
+				key: key
+			})
+			this.getListFromRouter(nextProps.location.state.key)
+		}	
 	}
 
 	componentWillUnmount(){

@@ -40,10 +40,10 @@ class MainNav extends Component {
   handleClose = () => this.setState({open: false})
 
 	goToList = (key, list) => {
-	console.log(list)
+		//console.log(list)
 		browserHistory.push({
 			pathname: `/lists/${key}`,
-  		state: { list }
+  		state: { list, key }
 		})
 	}
 
