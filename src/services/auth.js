@@ -23,12 +23,10 @@ export function isAuthUser () {
 
 function authDataCallback(user) {
   if (user) {
-    return user
-  } 
-  return null
+    console.log("User " + user.uid + " is logged in with " + user.providerId);
+  } else {
+    console.log("User is logged out");
+  }
 }
 
-export function getUser(){
-	// Listen to authentication
-	base.onAuth(authDataCallback)
-}
+export const authCheck = base.onAuth(authDataCallback)

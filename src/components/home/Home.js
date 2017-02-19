@@ -4,7 +4,7 @@ import Subheader from 'material-ui/Subheader'
 import { Card } from 'material-ui/Card'
 import { Row, Col } from 'react-grid-system'
 import { syncTodoLists, removeBaseSync } from '../../services/services'
-import { getLoggedInUser, getUser } from '../../services/auth'
+import { getLoggedInUser } from '../../services/auth'
 import { addList } from '../../services/lists'
 import CircularProgress from 'material-ui/CircularProgress'
 
@@ -21,8 +21,6 @@ class Home extends Component {
 	componentDidMount(){
 		const uid = getLoggedInUser();
 		syncTodoLists(this, uid)
-
-		getUser()
 	}
 
 	componentWillUnmount(){

@@ -57,7 +57,7 @@ class UpdateTask extends Component {
 				    />
 					</Col>
 					<Col md={2}>
-						<FlatButton label="Delete" onTouchTap={this.confirmDelete} secondary={true} />
+						<FlatButton label="Delete" onTouchTap={(e) => {e.preventDefault();this.confirmDelete()}} secondary={true} />
 					</Col>
 	        <Dialog
 	          title="Delete this task?"
@@ -65,13 +65,13 @@ class UpdateTask extends Component {
 				      <FlatButton
 				        label="Cancel"
 				        primary={true}
-				        onTouchTap={this.handleModalClose}
+				        onTouchTap={(e) => {e.preventDefault();this.handleModalClose()}}
 				      />,
 				      <RaisedButton
 				      	label="DELETE TASK"
 				        secondary={true}
 				        keyboardFocused={true}
-				        onTouchTap={this.handleDeleteTask} />,
+				        onTouchTap={(e) => {e.preventDefault();this.handleDeleteTask()}} />,
 				    ]}
 	          modal={false}
 	          open={this.state.modalOpen}

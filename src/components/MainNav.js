@@ -21,11 +21,16 @@ class MainNav extends Component {
     this.state = {
     	lists: {},
     	open: false,
-    	isLoading: true
+    	isLoading: true,
+    	isLoggedIn: false
     }
   }
 
   componentDidMount(){
+  	this.getLists()
+  }
+
+  getLists = () => {
   	if( getLoggedInUser()) {
   		const uid = getLoggedInUser()
   		this.ref = base.listenTo(`${uid}/lists`, {
@@ -34,6 +39,12 @@ class MainNav extends Component {
   		})
   	}
   }
+
+  componentWillReceiveProps(nextProps, nextState){
+		if(this.state.isLoggedIn !== nextState.isLoggedIn){
+			this.getLists()
+		}
+	}
 
   handleToggle = () => this.setState({open: !this.state.open})
 
@@ -61,6 +72,7 @@ class MainNav extends Component {
 		}
 
 		const { lists } = this.state
+		const { isLoggedIn } = this.props
 		return (
 			<div>
 			 <AppBar
@@ -69,20 +81,22 @@ class MainNav extends Component {
 			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={(e) => {e.preventDefault();this.handleToggle()}} /></IconButton>}
 			    iconElementRight={<Logout />}
 			  />
-			  <Drawer 
-	          open={this.state.open} 
-	          docked={false}
-	          onRequestChange={(open) => this.setState({open})}>
-	          <AppBar 
-	          	title="Todo lists"
-	          	iconElementLeft={<div></div>}
-	          />
-	          {
-	          	Object
-	          		.keys(lists)
-	          		.map(this.renderMenuItem)
-	          }
-	        </Drawer>
+			  {isLoggedIn &&
+				  <Drawer 
+		          open={this.state.open} 
+		          docked={false}
+		          onRequestChange={(open) => this.setState({open})}>
+		          <AppBar 
+		          	title="Todo lists"
+		          	iconElementLeft={<div></div>}
+		          />
+		          {
+		          	Object
+		          		.keys(lists)
+		          		.map(this.renderMenuItem)
+		          }
+		        </Drawer>
+	        }
 	    	</div>
 			)
 	}
