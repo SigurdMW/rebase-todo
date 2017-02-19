@@ -1,5 +1,6 @@
 import base from '../base'
 import { getLoggedInUser } from './auth'
+import { browserHistory } from 'react-router'
 
 export function addList (obj) {
 	const uid = getLoggedInUser();
@@ -14,4 +15,15 @@ export function addList (obj) {
 		return list
 	}
 	return false
+}
+
+export function deleteList (key) {
+	const uid = getLoggedInUser()
+	if(uid){
+		base.remove(`${uid}/lists/${key}`).then(() => {
+	    browserHistory.push("/")
+	  }).catch(error => {
+	    //handle error
+	  })
+	}
 }

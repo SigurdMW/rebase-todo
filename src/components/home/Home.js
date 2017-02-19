@@ -7,6 +7,8 @@ import { syncTodoLists, removeBaseSync } from '../../services/services'
 import { getLoggedInUser } from '../../services/auth'
 import { addList } from '../../services/lists'
 import CircularProgress from 'material-ui/CircularProgress'
+import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton'
 
 
 class Home extends Component {
@@ -27,10 +29,11 @@ class Home extends Component {
 		removeBaseSync(this)
 	}
 
-	handleAddList = () => {
-		const newList = {id:123, title: "handleAddList", todos: {asdaa1231sda: {name:"test", completed:true}}}
+	handleAddList = (e) => {
+		e.preventDefault()
+		const newList = {title: this.refs.listTitle.getValue()}
 		addList(newList)
-		// const listid = addList(newList)
+		this.refs.listTitle.getInputNode().value = ""
 	}
 
 	goToList = (key, list) => {
@@ -72,6 +75,13 @@ class Home extends Component {
 		return (
 			<div>
 				<h1>My lists</h1>
+				<form onSubmit={this.handleAddList}>
+					<TextField
+			      floatingLabelText="Add list"
+			      ref="listTitle"
+			    />
+			    <RaisedButton label="Add list" primary={true} type="submit" />
+				</form>
 				<p>Here are your todo-lists:</p>
 				<Row>
 	      		<Col md={6}>
@@ -79,7 +89,7 @@ class Home extends Component {
 				      	<List>
 								<Subheader>All your todo-lists</Subheader>
 								{isLoading && 
-				      		<CircularProgress style={loaderStyle} thickness={7} />
+				      		<CircularProgress style={loaderStyle} />
 				      	}
 			        	{
 									Object

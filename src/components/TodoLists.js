@@ -6,11 +6,13 @@ import { Card } from 'material-ui/Card'
 import { List, ListItem } from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
 import { addTask, taskTemplate, updateTask, deleteTask } from '../services/tasks'
+import { deleteList } from '../services/lists'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import UpdateTask from './task/UpdateTask'
 import Checkbox from 'material-ui/Checkbox'
 import { removeBaseSync } from '../services/services'
+import Snackbar from 'material-ui/Snackbar'
 
 
 class TodoLists extends Component {
@@ -18,7 +20,8 @@ class TodoLists extends Component {
 		super()
 		this.state = {
 			list: {},
-			key: ""
+			key: "",
+			message: ""
 		}
 	}
 
@@ -60,6 +63,11 @@ class TodoLists extends Component {
 
 	componentWillUnmount(){
 		removeBaseSync(this)
+	}
+
+	handleDeleteList = () => {
+		deleteList(this.props.location.state.key)
+		this.setState({ message: "Successfully deleted list."})
 	}
 
 	addTodo = (e) => {
@@ -120,6 +128,18 @@ class TodoLists extends Component {
 			    />
 			    <RaisedButton label="Add task" primary={true} type="submit" />
 				</form>
+
+				<br /><br />
+
+				<RaisedButton label="Delete list" onTouchTap={(e) => {e.preventDefault();this.handleDeleteList()}} secondary={true} />
+				{
+					this.state.message &&
+					 <Snackbar
+	          open={true}
+	          message={this.state.message}
+	          autoHideDuration={4000}
+	        />
+				}
 
 				<br /><br />
 
