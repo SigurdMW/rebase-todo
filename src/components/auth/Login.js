@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField'
 import Snackbar from 'material-ui/Snackbar'
 import { Row, Col } from 'react-grid-system'
 import base from '../../base'
+import { Link } from 'react-router'
 
 class Login extends Component {
 	constructor(){
@@ -87,6 +88,9 @@ class Login extends Component {
 						<RaisedButton label="Login" type="submit" primary={true} />
 						<br />
 					</form>
+
+					<br />
+					<Link to="/register">Register new user</Link>
 				</Col>
 			</Row>			
 		)

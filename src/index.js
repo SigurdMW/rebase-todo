@@ -13,6 +13,7 @@ import App from './components/App'
 import Home from './components/home/Home'
 import TodoLists from './components/TodoLists'
 import Login from './components/auth/Login'
+import NewUser from './components/new-user/NewUser'
 
 // css
 import './index.css'
@@ -37,6 +38,7 @@ const appRoutes = (
 			<IndexRoute component={Home} onEnter={authCheck} />
 			<Route path="/lists/:listId" component={TodoLists} onEnter={authCheck} />
 			<Route path="/login" component={Login} />
+			<Route path="/register" component={NewUser} />
 		</Route>
 	</Router>
 )

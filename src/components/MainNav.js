@@ -22,7 +22,7 @@ class MainNav extends Component {
     	lists: {},
     	open: false,
     	isLoading: true,
-    	isLoggedIn: false
+    	isAuthUser: false
     }
   }
 
@@ -41,7 +41,7 @@ class MainNav extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextState){
-		if(this.state.isLoggedIn !== nextState.isLoggedIn){
+		if(this.state.isAuthUser !== nextState.isAuthUser){
 			this.getLists()
 		}
 	}
@@ -72,16 +72,16 @@ class MainNav extends Component {
 		}
 
 		const { lists } = this.state
-		const { isLoggedIn } = this.props
+		const { isAuthUser } = this.props
 		return (
 			<div>
 			 <AppBar
 			    title={<Link to="/" 
 			    style={style}>{this.props.title}</Link>}
-			    iconElementLeft={<IconButton><NavigationMenu onTouchTap={(e) => {e.preventDefault();this.handleToggle()}} /></IconButton>}
+			    iconElementLeft={<IconButton onTouchTap={(e) => {e.preventDefault();this.handleToggle()}}><NavigationMenu /></IconButton>}
 			    iconElementRight={<Logout />}
 			  />
-			  {isLoggedIn &&
+			  {isAuthUser &&
 				  <Drawer 
 		          open={this.state.open} 
 		          docked={false}

@@ -10,7 +10,8 @@ class App extends Component {
 		super()
 
 		this.state = {
-			isLoggedIn: false
+			isAuthUser: false,
+			authUser: {}
 		}
 	}
 
@@ -22,11 +23,13 @@ class App extends Component {
 	authDataCallback = (user) => {
 	  if (user) {
 	    this.setState({
-	    	isLoggedIn: true
+	    	isAuthUser: true,
+	    	authUser: user
 	    })
 	  } else {
 	  	this.setState({
-	  		isLoggedIn: false
+	  		isAuthUser: false,
+	  		authUser: {}
 	  	})
 	  }
 	}
@@ -36,9 +39,15 @@ class App extends Component {
 		return (
 			<MuiThemeProvider>
 				<div>
-					<MainNav title="Firebase todo" isLoggedIn={this.state.isLoggedIn} />
+					<MainNav title="Firebase todo" isAuthUser={this.state.isAuthUser} />
 					<Container fluid={true}>
-						{this.props.children}
+						{React.cloneElement(
+							this.props.children, 
+							{ 
+								isAuthUser: this.state.isAuthUser, 
+								authUser: this.state.authUser 
+							}
+						)}
 					</Container>
 					<MainFooter />
 				</div>

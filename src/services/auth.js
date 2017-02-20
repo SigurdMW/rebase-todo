@@ -20,13 +20,3 @@ export function isAuthUser () {
 	const user = localStorage.getItem("user")
 	return (user) ? true : false
 }
-
-function authDataCallback(user) {
-  if (user) {
-    console.log("User " + user.uid + " is logged in with " + user.providerId);
-  } else {
-    console.log("User is logged out");
-  }
-}
-
-export const authCheck = base.onAuth(authDataCallback)
