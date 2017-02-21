@@ -4,7 +4,6 @@ import Subheader from 'material-ui/Subheader'
 import { Card } from 'material-ui/Card'
 import { Row, Col } from 'react-grid-system'
 import { syncTodoLists, removeBaseSync } from '../../services/services'
-import { getLoggedInUser } from '../../services/auth'
 import { addList } from '../../services/lists'
 import CircularProgress from 'material-ui/CircularProgress'
 import TextField from 'material-ui/TextField'
@@ -16,23 +15,48 @@ class Home extends Component {
 		super()
 		this.state = {
 			lists: {},
-			isLoading: true
+			isLoading: true,
+			isAuthUser: false,
+			authUser: {}
 		}
 	}
 
+	syncAuthPropsToState = (isAuthUser, authUser) => {
+		this.setState({
+  		isAuthUser: isAuthUser,
+  		authUser: authUser
+  	})
+  	syncTodoLists(this, authUser.uid)
+	}
+
 	componentDidMount(){
-		const uid = getLoggedInUser();
-		syncTodoLists(this, uid)
+		if(this.props.isAuthUser){
+			this.syncAuthPropsToState(
+				this.props.isAuthUser,
+				this.props.authUser
+			)
+		}
+	}
+
+	componentWillReceiveProps(nextProps, nextState){
+		if(this.state.isAuthUser !== nextState.isAuthUser){
+			this.syncAuthPropsToState(
+				nextProps.isAuthUser,
+				nextProps.authUser
+			)
+		}
 	}
 
 	componentWillUnmount(){
-		removeBaseSync(this)
+		if(this.state.isAuthUser){
+			removeBaseSync(this)
+		}
 	}
 
 	handleAddList = (e) => {
 		e.preventDefault()
 		const newList = {title: this.refs.listTitle.getValue()}
-		addList(newList)
+		addList(this.props.authUser.uid,newList)
 		this.refs.listTitle.getInputNode().value = ""
 	}
 
@@ -72,6 +96,7 @@ class Home extends Component {
 		const loaderStyle = {
 			paddingLeft: "16px"
 		}
+		const noListsOrLoading = (!isLoading && Object.keys(lists).length === 0) ? true : false;
 		return (
 			<div>
 				<h1>My lists</h1>
@@ -90,6 +115,9 @@ class Home extends Component {
 								<Subheader>All your todo-lists</Subheader>
 								{isLoading && 
 				      		<CircularProgress style={loaderStyle} />
+				      	}
+				      	{noListsOrLoading &&
+				      		<Subheader>You have no lists:(</Subheader>
 				      	}
 			        	{
 									Object

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import FlatButton from 'material-ui/FlatButton'
-import { logOutUser, isAuthUser } from '../../services/auth'
+import { logOutUser } from '../../services/auth'
 
 class Logout extends Component {
 
@@ -11,7 +11,9 @@ class Logout extends Component {
 			marginTop: "8px"
 		}
 
-		if (isAuthUser()){
+		const { isAuthUser } = this.props
+
+		if (isAuthUser){
 			return (
 				<FlatButton style={style} label="Log out" onTouchTap={(e) => {e.preventDefault();logOutUser()}} />
 			)

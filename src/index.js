@@ -6,7 +6,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 // services
-import { getLoggedInUser } from './services/auth'
+import base from './base'
 
 // components
 import App from './components/App'
@@ -21,10 +21,17 @@ import './index.css'
 // Material dependency
 injectTapEventPlugin()
 
+var authUser = true
+base.onAuth((user) => {
+  if (user) {
+  	authUser = user
+  } else {
+  	authUser = false
+  }
+})
+
 function authCheck(nextState, replace) {
-	const uid = getLoggedInUser();
-	
-	if(!uid){
+	if(!authUser){
 		replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }

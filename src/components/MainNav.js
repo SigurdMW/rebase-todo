@@ -6,7 +6,6 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import Logout from './auth/Logout'
-import { getLoggedInUser } from '../services/auth'
 import base from '../base'
 import { browserHistory } from 'react-router'
 
@@ -18,22 +17,19 @@ import { browserHistory } from 'react-router'
 class MainNav extends Component {
 	constructor(props) {
     super(props)
+    
     this.state = {
     	lists: {},
     	open: false,
     	isLoading: true,
-    	isAuthUser: false
+    	isAuthUser: false,
+    	authUser: {}
     }
   }
 
-  componentDidMount(){
-  	this.getLists()
-  }
-
-  getLists = () => {
-  	if( getLoggedInUser()) {
-  		const uid = getLoggedInUser()
-  		this.ref = base.listenTo(`${uid}/lists`, {
+  getLists = (authUser) => {
+  	if( authUser.uid ) {
+  		this.ref = base.listenTo(`${authUser.uid}/lists`, {
   			context: this,
 	  		then(data){ this.setState({ isLoading: false, lists: data })}
   		})
@@ -42,7 +38,12 @@ class MainNav extends Component {
 
   componentWillReceiveProps(nextProps, nextState){
 		if(this.state.isAuthUser !== nextState.isAuthUser){
-			this.getLists()
+			this.setState({
+	  		isAuthUser: nextProps.isAuthUser,
+	  		authUser: nextProps.authUser
+  		})
+
+			this.getLists(nextProps.authUser)
 		}
 	}
 
@@ -51,7 +52,6 @@ class MainNav extends Component {
   handleClose = () => this.setState({open: false})
 
 	goToList = (key, list) => {
-		//console.log(list)
 		browserHistory.push({
 			pathname: `/lists/${key}`,
   		state: { list, key }
@@ -61,7 +61,15 @@ class MainNav extends Component {
   renderMenuItem = (key, index) => {
 		const list = this.state.lists[key]
   	return (
-  		<MenuItem onTouchTap={(e) => {e.preventDefault();this.goToList(key, list);this.handleClose()}} key={key}>{ list.title }</MenuItem>
+  		<MenuItem 
+  			onTouchTap={(e) => {
+  				e.preventDefault()
+  				this.goToList(key, list)
+  				this.handleClose()}
+  			} 
+  			key={key}>
+  			{ list.title }
+  		</MenuItem>
   	)
   }
 
@@ -72,14 +80,24 @@ class MainNav extends Component {
 		}
 
 		const { lists } = this.state
-		const { isAuthUser } = this.props
+		const { isAuthUser } = this.state
+		const haveNoLists = (Object.keys(lists).length === 0) ? true : false
+
 		return (
 			<div>
 			 <AppBar
 			    title={<Link to="/" 
 			    style={style}>{this.props.title}</Link>}
-			    iconElementLeft={<IconButton onTouchTap={(e) => {e.preventDefault();this.handleToggle()}}><NavigationMenu /></IconButton>}
-			    iconElementRight={<Logout />}
+			    iconElementLeft={
+			    	<IconButton 
+			    		onTouchTap={(e) => {
+			    			e.preventDefault()
+			    			this.handleToggle()}
+			    		}>
+			    		<NavigationMenu />
+			    	</IconButton>
+			    }
+			    iconElementRight={<Logout isAuthUser={this.state.isAuthUser} />}
 			  />
 			  {isAuthUser &&
 				  <Drawer 
@@ -90,6 +108,9 @@ class MainNav extends Component {
 		          	title="Todo lists"
 		          	iconElementLeft={<div></div>}
 		          />
+		          {haveNoLists &&
+								<MenuItem>You have no lists.</MenuItem>
+		          }
 		          {
 		          	Object
 		          		.keys(lists)
@@ -100,6 +121,11 @@ class MainNav extends Component {
 	    	</div>
 			)
 	}
+}
+
+MainNav.propTypes = {
+  isAuthUser: React.PropTypes.bool,
+  authUser: React.PropTypes.object
 }
 
 export default MainNav;

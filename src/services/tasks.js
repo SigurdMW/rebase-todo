@@ -1,8 +1,6 @@
 import base from '../base'
-import { getLoggedInUser } from './auth'
 
-export function addTask (listId, obj) {
-	const uid = getLoggedInUser()
+export function addTask (uid, listId, obj) {
 	if(uid){
 		var task = base.push(`${uid}/lists/${listId}/tasks`, {
 	    data: obj,
@@ -25,8 +23,7 @@ export function taskTemplate ({
 	return { name, completed, created_at}
 }
 
-export function updateTask (listId, taskId, obj) {
-	const uid = getLoggedInUser()
+export function updateTask (uid, listId, taskId, obj) {
  	base.update(`${uid}/lists/${listId}/tasks/${taskId}`, {
     data: obj
   }).then(() => {
@@ -36,8 +33,7 @@ export function updateTask (listId, taskId, obj) {
   })
 }
 
-export function deleteTask (listId, taskId) {
-	const uid = getLoggedInUser()
+export function deleteTask (uid, listId, taskId) {
 	base.remove(`${uid}/lists/${listId}/tasks/${taskId}`).then(() => {
     // do stuff
   }).catch(error => {

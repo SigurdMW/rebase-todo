@@ -39,7 +39,7 @@ class App extends Component {
 		return (
 			<MuiThemeProvider>
 				<div>
-					<MainNav title="Firebase todo" isAuthUser={this.state.isAuthUser} />
+					<MainNav title="Firebase todo" isAuthUser={this.state.isAuthUser} authUser={this.state.authUser} />
 					<Container fluid={true}>
 						{React.cloneElement(
 							this.props.children, 

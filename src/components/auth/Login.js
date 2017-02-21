@@ -18,17 +18,6 @@ class Login extends Component {
 	firebaseLogin = (email, password) => {
 		base.auth().signInWithEmailAndPassword(email, password)
 			.then((user) => {
-				const userInfo = {
-					name: user.displayName,
-					email: user.email,
-					uid: user.uid
-				}
-
-				localStorage.setItem("user", JSON.stringify(userInfo))
-				this.props.router.replace('/')
-				//setLoginDataToLS(user.uid, userInfo);
-
-
 				/* CAN BE USED TO TAKE USER TO REQUESTED URL
 				const { location } = this.context.router;
 				
@@ -47,6 +36,12 @@ class Login extends Component {
 	     	this.setState({ error: errorMessage })
 	      console.log(error)
       });
+	}
+
+	componentWillReceiveProps(nextState, nextProps){
+		if(!this.props.isAuthUser && nextProps.isAuthUser){
+			this.props.router.replace('/')
+		}
 	}
 	
 	handleSubmit = (e) => {

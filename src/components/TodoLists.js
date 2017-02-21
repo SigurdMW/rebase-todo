@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import base from '../base'
-import { getLoggedInUser } from '../services/auth'
 import { Row, Col } from 'react-grid-system'
 import { Card } from 'material-ui/Card'
 import { List, ListItem } from 'material-ui/List'
@@ -21,21 +20,39 @@ class TodoLists extends Component {
 		this.state = {
 			list: {},
 			key: "",
-			message: ""
+			message: "",
+			isAuthUser: false,
+			authUser: {}
 		}
 	}
 
+	syncAuthPropsToState = (isAuthUser, authUser) => {
+		this.setState({
+  		isAuthUser: isAuthUser,
+  		authUser: authUser
+  	})
+	}
+
 	getListFromRouter = (listId) => {
-		const uid = getLoggedInUser()
-		this.ref = base.syncState(`${uid}/lists/${listId}`, {
+		if(this.props.isAuthUser){
+			const uid = this.props.authUser.uid
+			
+			this.ref = base.syncState(`${uid}/lists/${listId}`, {
 	    context: this,
 	    state: 'list'
 	  })
+		}
 	}
 
 	componentDidMount(){
 		// get list info from location state
 		//this.getListFromRouter()
+		if(this.props.isAuthUser){
+			this.syncAuthPropsToState(
+				this.props.isAuthUser,
+				this.props.authUser
+			)
+		}
 
 		// sync state with firebase
 		if(this.props.location.state.list){
@@ -46,12 +63,20 @@ class TodoLists extends Component {
 			})
 			this.getListFromRouter(key)
 		}
-		
 	}
 
 	componentWillReceiveProps(nextProps, nextState){
+		if(this.state.isAuthUser !== nextState.isAuthUser){
+			this.syncAuthPropsToState(
+				nextProps.isAuthUser,
+				nextProps.authUser
+			)
+		}
+
 		if(this.props.location.state.key !== nextProps.location.state.key){
-			removeBaseSync(this)
+			if(this.ref){
+				removeBaseSync(this)
+			}
 			const { list, key } = nextProps.location.state
 			this.setState({
 				list: list,
@@ -62,11 +87,13 @@ class TodoLists extends Component {
 	}
 
 	componentWillUnmount(){
-		removeBaseSync(this)
+		if(this.ref){
+			removeBaseSync(this)
+		}
 	}
 
 	handleDeleteList = () => {
-		deleteList(this.props.location.state.key)
+		deleteList(this.props.authUser.uid,this.props.location.state.key)
 		this.setState({ message: "Successfully deleted list."})
 	}
 
@@ -74,23 +101,37 @@ class TodoLists extends Component {
 		e.preventDefault()
 		const name = this.refs.taskText.getValue()
 		const task = taskTemplate({name})
-		addTask(this.props.params.listId, task)
+		addTask(this.props.authUser.uid, this.props.params.listId, task)
 		this.refs.taskText.getInputNode().value = ""
 	}
 
 	handleUpdateTask = (taskId, obj) => {
 		console.log(this.props.params.listId, taskId, obj)
-		updateTask(this.props.params.listId, taskId, obj)
+		updateTask(
+			this.props.authUser.uid,
+			this.props.params.listId, 
+			taskId, 
+			obj
+		)
 	}
 
 	handleDeleteTask = (taskId) => {
-		deleteTask(this.props.params.listId, taskId)
+		deleteTask(
+			this.props.authUser.uid,
+			this.props.params.listId, 
+			taskId
+		)
 	}
 
 	handleToggle = (taskId) => {
-		updateTask(this.props.params.listId, taskId, {
-			completed: !this.state.list.tasks[taskId].completed
-		})
+		updateTask(
+			this.props.authUser.uid, 
+			this.props.params.listId, 
+			taskId, 
+			{
+				completed: !this.state.list.tasks[taskId].completed
+			}
+		)
 	}
 
 	renderTask = (key, index) => {
