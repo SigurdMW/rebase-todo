@@ -38,12 +38,15 @@ class Home extends Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps, nextState){
-		if(this.state.isAuthUser !== nextState.isAuthUser){
+	componentWillReceiveProps(nextProps){
+		if(!this.props.isAuthUser && nextProps.isAuthUser){
 			this.syncAuthPropsToState(
 				nextProps.isAuthUser,
 				nextProps.authUser
 			)
+		}
+		if(!this.props.isAuthUser && !nextProps.isAuthUser){
+			this.props.router.push("/login")
 		}
 	}
 
