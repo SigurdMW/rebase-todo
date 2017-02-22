@@ -14,15 +14,6 @@ class NewUser extends Component {
 
 	checkAuthAndRedirect = () => {
 		if(this.props.authUser){
-			const { authUser } = this.props
-
-			console.log(authUser)
-			
-			const userInfo = {
-					email: authUser.email,
-					uid: authUser.uid
-			}
-			localStorage.setItem("user", JSON.stringify(userInfo))
 			browserHistory.push("/")
 		} else {
 			console.log("no user")

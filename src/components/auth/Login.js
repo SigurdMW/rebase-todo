@@ -38,17 +38,15 @@ class Login extends Component {
       });
 	}
 
-	componentWillReceiveProps(nextState, nextProps){
-		if(!this.props.isAuthUser && nextProps.isAuthUser){
+	componentWillReceiveProps(nextProps){
+		if(nextProps.isAuthUser){
 			this.props.router.replace('/')
 		}
 	}
 	
 	handleSubmit = (e) => {
-		e.preventDefault();
-		//this.props.addTask(this.refs.task.getValue());
-		//	this.refs.task.getInputNode().value = ''
-		const { email, password } = this.refs;
+		e.preventDefault()
+		const { email, password } = this.refs
 		this.firebaseLogin(email.getValue(), password.getValue())
 	}
 

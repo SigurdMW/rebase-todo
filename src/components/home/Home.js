@@ -11,13 +11,13 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 
 class Home extends Component {
-	constructor(){
-		super()
+	constructor(props){
+		super(props)
 		this.state = {
 			lists: {},
 			isLoading: true,
-			isAuthUser: false,
-			authUser: {}
+			isAuthUser: props.isAuthUser || false,
+			authUser: props.authUser || {}
 		}
 	}
 

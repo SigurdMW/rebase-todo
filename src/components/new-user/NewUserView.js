@@ -37,4 +37,8 @@ class NewUserView extends Component {
 	}
 }
 
+NewUserView.propTypes = {
+  addNewUser: React.PropTypes.func.isRequired
+}
+
 export default NewUserView

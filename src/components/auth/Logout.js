@@ -15,7 +15,14 @@ class Logout extends Component {
 
 		if (isAuthUser){
 			return (
-				<FlatButton style={style} label="Log out" onTouchTap={(e) => {e.preventDefault();logOutUser()}} />
+				<FlatButton 
+					style={style} 
+					label="Log out" 
+					onTouchTap={(e) => {
+						e.preventDefault()
+						logOutUser()
+					}
+				} />
 			)
 		}
 		return false
