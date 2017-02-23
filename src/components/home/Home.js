@@ -17,7 +17,8 @@ class Home extends Component {
 			lists: {},
 			isLoading: true,
 			isAuthUser: props.isAuthUser || false,
-			authUser: props.authUser || {}
+			authUser: props.authUser || {},
+			addListError: ""
 		}
 	}
 
@@ -58,9 +59,19 @@ class Home extends Component {
 
 	handleAddList = (e) => {
 		e.preventDefault()
-		const newList = {title: this.refs.listTitle.getValue()}
-		addList(this.props.authUser.uid,newList)
-		this.refs.listTitle.getInputNode().value = ""
+		const newList = {title: this.refs.listTitle.getValue().trim()}
+
+		if(newList.title !== ""){
+			addList(this.props.authUser.uid, newList)
+			this.refs.listTitle.getInputNode().value = ""
+			this.setState({
+				addListError: ""
+			})
+		} else {
+			this.setState({
+				addListError: "List title cannot be empty"
+			})
+		}
 	}
 
 	goToList = (key, list) => {
@@ -105,10 +116,12 @@ class Home extends Component {
 				<h1>My lists</h1>
 				<form onSubmit={this.handleAddList}>
 					<TextField
-			      floatingLabelText="Add list"
-			      ref="listTitle"
-			    />
-			    <RaisedButton label="Add list" primary={true} type="submit" />
+				      floatingLabelText="Add list"
+				      ref="listTitle"
+				      errorText={this.state.addListError}
+				    />
+				  <br />
+		    	<RaisedButton label="Add list" primary={true} type="submit" />
 				</form>
 				<p>Here are your todo-lists:</p>
 				<Row>

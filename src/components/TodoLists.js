@@ -12,6 +12,8 @@ import UpdateTask from './task/UpdateTask'
 import Checkbox from 'material-ui/Checkbox'
 import { removeBaseSync } from '../services/services'
 import Snackbar from 'material-ui/Snackbar'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
 
 
 class TodoLists extends Component {
@@ -22,7 +24,9 @@ class TodoLists extends Component {
 			key: "",
 			message: "",
 			isAuthUser: false,
-			authUser: {}
+			authUser: {},
+			modalOpen: false,
+			addTodoError: ""
 		}
 	}
 
@@ -92,6 +96,18 @@ class TodoLists extends Component {
 		}
 	}
 
+	handleModalClose = () => {
+		this.setState({
+			modalOpen: false
+		})
+	}
+
+	handleModalOpen = () => {
+		this.setState({
+			modalOpen: true
+		})
+	}
+
 	handleDeleteList = () => {
 		deleteList(this.props.authUser.uid,this.props.location.state.key)
 		this.setState({ message: "Successfully deleted list."})
@@ -99,10 +115,19 @@ class TodoLists extends Component {
 
 	addTodo = (e) => {
 		e.preventDefault()
-		const name = this.refs.taskText.getValue()
-		const task = taskTemplate({name})
-		addTask(this.props.authUser.uid, this.props.params.listId, task)
-		this.refs.taskText.getInputNode().value = ""
+		const name = this.refs.taskText.getValue().trim()
+		if(name !== ""){
+			const task = taskTemplate({name})
+			addTask(this.props.authUser.uid, this.props.params.listId, task)
+			this.refs.taskText.getInputNode().value = ""
+			this.setState({
+				addTodoError: ""
+			})
+		} else {
+			this.setState({
+				addTodoError: "Name of todo cannot be empty"
+			})
+		}
 	}
 
 	handleUpdateTask = (taskId, obj) => {
@@ -166,13 +191,34 @@ class TodoLists extends Component {
 					<TextField
 			      floatingLabelText="Add task"
 			      ref="taskText"
+			      errorText={this.state.addTodoError}
 			    />
+			    <br />
 			    <RaisedButton label="Add task" primary={true} type="submit" />
 				</form>
 
 				<br /><br />
 
-				<RaisedButton label="Delete list" onTouchTap={(e) => {e.preventDefault();this.handleDeleteList()}} secondary={true} />
+				<Dialog
+	          title="Delete this list?"
+	          actions={[
+				      <FlatButton
+				        label="Cancel"
+				        primary={true}
+				        onTouchTap={(e) => {e.preventDefault();this.handleModalClose()}}
+				      />,
+				      <RaisedButton
+				      	label="DELETE LIST"
+				        secondary={true}
+				        keyboardFocused={true}
+				        onTouchTap={(e) => {e.preventDefault();this.handleDeleteList()}} />,
+				    ]}
+	          modal={false}
+	          open={this.state.modalOpen}
+	          onRequestClose={this.handleModalClose}
+	        >
+	        	Are you sure you want to delete this list?
+	        </Dialog>
 				{
 					this.state.message &&
 					 <Snackbar
@@ -182,7 +228,6 @@ class TodoLists extends Component {
 	        />
 				}
 
-				<br /><br />
 
 				<Row>
 					<Col md={6}>
@@ -199,6 +244,8 @@ class TodoLists extends Component {
 								}
 			      	</List>
 			      </Card>
+			      <br /> 
+			      <RaisedButton label="Delete list" onTouchTap={(e) => {e.preventDefault();this.handleModalOpen()}} secondary={true} />
 					</Col>
 				</Row>
 			</div>

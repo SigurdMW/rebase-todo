@@ -5,7 +5,7 @@ import IconButton from 'material-ui/IconButton'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
-import Logout from './auth/Logout'
+import LoggedInMenu from './auth/Logout'
 import base from '../base'
 import { browserHistory } from 'react-router'
 
@@ -97,7 +97,7 @@ class MainNav extends Component {
 			    		<NavigationMenu />
 			    	</IconButton>
 			    }
-			    iconElementRight={<Logout isAuthUser={this.state.isAuthUser} />}
+			    iconElementRight={<LoggedInMenu isAuthUser={this.state.isAuthUser} />}
 			  />
 			  {isAuthUser &&
 				  <Drawer 
