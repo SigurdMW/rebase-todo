@@ -3,51 +3,14 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import Snackbar from 'material-ui/Snackbar'
 import { Row, Col } from 'react-grid-system'
-import base from '../../base'
 import { Link } from 'react-router'
 
-class Login extends Component {
-	constructor(){
-		super();
-
-		this.state = {
-			error: null
-		}
-	}
-
-	firebaseLogin = (email, password) => {
-		base.auth().signInWithEmailAndPassword(email, password)
-			.then((user) => {
-				/* CAN BE USED TO TAKE USER TO REQUESTED URL
-				const { location } = this.context.router;
-				
-				if (location.state && location.state.nextPathname) {
-					// if requested other URL than default after login, this handles that:
-          this.props.router.replace(location.state.nextPathname)
-        } else {
-          this.props.router.replace('/home')
-        }
-				//this.context.router.push('/');
-				*/
-			})
-			.catch((error) => {
-				//const errorCode = error.code;
-        const errorMessage = error.message
-	     	this.setState({ error: errorMessage })
-	      console.log(error)
-      });
-	}
-
-	componentWillReceiveProps(nextProps){
-		if(nextProps.isAuthUser){
-			this.props.router.replace('/')
-		}
-	}
+class LoginForm extends Component {
 	
 	handleSubmit = (e) => {
 		e.preventDefault()
 		const { email, password } = this.refs
-		this.firebaseLogin(email.getValue(), password.getValue())
+		this.props.handleLogin(email.getValue(), password.getValue())
 	}
 
 	render(){
@@ -58,10 +21,10 @@ class Login extends Component {
 						<h1>Login</h1>
 						<p>Please login to your todo-app.</p>
 						{
-							this.state.error &&
+							this.props.error &&
 							 <Snackbar
 			          open={true}
-			          message={this.state.error}
+			          message={this.props.error}
 			          autoHideDuration={4000}
 			        />
 						}
@@ -90,4 +53,9 @@ class Login extends Component {
 	}
 }
 
-export default Login
+LoginForm.propTypes = {
+	error: React.PropTypes.string,
+	handleLogin: React.PropTypes.func.isRequired
+}
+
+export default LoginForm
