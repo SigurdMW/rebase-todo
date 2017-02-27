@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
-import Snackbar from 'material-ui/Snackbar'
 
 
-class NewUserForm extends Component {
+class NewUserView extends Component {
 
 	handleAddUser = (e) => {
 		e.preventDefault()
@@ -23,33 +22,23 @@ class NewUserForm extends Component {
       			floatingLabelText="Email"
       			type="email"
       			ref="email"
-      			errorText={this.props.emailError}
     			/>
     			<br />
     			<TextField
       			floatingLabelText="password"
       			type="password"
       			ref="pwd"
-      			errorText={this.props.pwdError}
     			/>
     			<br />
     			<RaisedButton label="Add user" type="submit" primary={true} />
 				</form>
-				{
-					this.props.formError &&
-					 <Snackbar
-	          open={true}
-	          message={this.props.formError}
-	          autoHideDuration={4000}
-	        />
-				}
 			</div>
 		)
 	}
 }
 
-NewUserForm.propTypes = {
+NewUserView.propTypes = {
   addNewUser: React.PropTypes.func.isRequired
 }
 
-export default NewUserForm
+export default NewUserView
